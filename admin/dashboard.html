@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Sari Deko</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-dark: #a07830;
+      --dark: #0f0f0f;
+      --dark-2: #1a1a1a;
+      --dark-3: #242424;
+      --border: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.85);
+      --text-dim: rgba(255,255,255,0.4);
+    }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ---- SIDEBAR ---- */
+    .sidebar {
+      width: 260px;
+      min-height: 100vh;
+      background: var(--dark-2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .icon { color: var(--gold); font-size: 1.3rem; }
+    .sidebar-logo h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #fff;
+      margin-top: 4px;
+    }
+    .sidebar-logo p {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .sidebar-nav {
+      padding: 20px 0;
+      flex: 1;
+    }
+
+    .nav-section-label {
+      font-size: 0.67rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 10px 24px 6px;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .sidebar-nav a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+    .sidebar-nav a.active {
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      border-left-color: var(--gold);
+    }
+    .sidebar-nav a .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    .sidebar-bottom {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar-bottom a {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+    .sidebar-bottom a:hover { color: var(--text); }
+
+    /* ---- MAIN ---- */
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 36px;
+      min-height: 100vh;
+    }
+
+    .page-header {
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      color: #fff;
+    }
+    .page-header p { color: var(--text-dim); font-size: 0.88rem; margin-top: 4px; }
+
+    .badge-live {
+      background: rgba(50,200,100,0.12);
+      border: 1px solid rgba(50,200,100,0.3);
+      color: #5de898;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-live::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: #5de898;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* ---- TABS ---- */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px;
+      margin-bottom: 32px;
+      width: fit-content;
+    }
+
+    .tab-btn {
+      padding: 10px 24px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .tab-btn.active {
+      background: var(--gold);
+      color: #fff;
+    }
+    .tab-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.05); }
+
+    /* ---- TAB PANELS ---- */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ---- KARTEN ---- */
+    .card {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-desc {
+      font-size: 0.83rem;
+      color: var(--text-dim);
+      margin-bottom: 22px;
+    }
+
+    /* ---- UPLOAD ZONE ---- */
+    .upload-zone {
+      border: 2px dashed rgba(201,168,76,0.3);
+      border-radius: 6px;
+      padding: 40px 24px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .upload-zone.drag-over {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.06);
+    }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 14px; }
+    .upload-zone h3 { font-size: 1rem; color: #fff; margin-bottom: 8px; }
+    .upload-zone p { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 18px; }
+
+    /* Versteckter echter File-Input */
+    #file-input { display: none; }
+
+    /* Sichtbarer Auswahl-Button */
+    .btn-upload {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-upload:hover {
+      background: var(--gold-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(201,168,76,0.3);
+    }
+
+    /* Fortschrittsbalken */
+    .upload-progress {
+      display: none;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .upload-progress-bar {
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+      transition: width 0.3s;
+      border-radius: 4px;
+    }
+    .upload-status {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .upload-error {
+      display: none;
+      margin-top: 12px;
+      background: rgba(220,50,50,0.1);
+      border: 1px solid rgba(220,50,50,0.3);
+      color: #ff6b6b;
+      padding: 10px 14px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+
+    /* ---- BILD-GRID ---- */
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .img-item {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+    }
+    .img-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .img-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .img-item:hover .img-item-overlay { opacity: 1; }
+
+    .img-item-name {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 0 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .btn-delete {
+      background: rgba(220,50,50,0.8);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-delete:hover { background: rgba(220,50,50,1); }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+    .empty-state .empty-icon { font-size: 2rem; margin-bottom: 10px; }
+
+    /* ---- FORMULAR ---- */
+    .form-row {
+      margin-bottom: 20px;
+    }
+    .form-row label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .form-row input,
+    .form-row textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.92rem;
+      transition: border-color 0.3s;
+      outline: none;
+      resize: vertical;
+    }
+    .form-row input:focus,
+    .form-row textarea:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.04);
+    }
+    .form-row textarea { min-height: 100px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .btn-save {
+      padding: 12px 30px;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-save:hover {
+      background: var(--gold-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(201,168,76,0.3);
+    }
+
+    .save-success {
+      display: none;
+      background: rgba(50,200,100,0.1);
+      border: 1px solid rgba(50,200,100,0.3);
+      color: #5de898;
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-top: 14px;
+    }
+
+    /* ---- PASSWORT ÄNDERN ---- */
+    .pw-info {
+      background: rgba(201,168,76,0.07);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: rgba(201,168,76,0.9);
+      margin-bottom: 20px;
+    }
+
+    /* ---- STATS ---- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 22px;
+    }
+    .stat-card .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .stat-card .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .stat-card .stat-sub { font-size: 0.78rem; color: var(--text-dim); margin-top: 4px; }
+
+    /* ---- ANIMATION ---- */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ---- TOAST ---- */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--dark-2);
+      border: 1px solid rgba(50,200,100,0.4);
+      color: #5de898;
+      padding: 14px 22px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.35s ease;
+      z-index: 9999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="icon">✦</span>
+      <h2>Sari Deko</h2>
+      <p>Admin-Bereich</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Verwaltung</div>
+      <a href="#" class="active" onclick="showTab('galerie', this)">
+        <span class="nav-icon">🖼️</span> Galerie & Bilder
+      </a>
+      <a href="#" onclick="showTab('texte', this)">
+        <span class="nav-icon">✏️</span> Texte & Inhalte
+      </a>
+      <a href="#" onclick="showTab('kontakt', this)">
+        <span class="nav-icon">📬</span> Kontaktdaten
+      </a>
+      <a href="#" onclick="showTab('einstellungen', this)">
+        <span class="nav-icon">⚙️</span> Einstellungen
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="../index.html" target="_blank">🌐 Website ansehen</a>
+      <a href="#" onclick="logout()">🚪 Abmelden</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <div class="page-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Willkommen zurück! Verwalte hier deine Website-Inhalte.</p>
+      </div>
+      <div class="badge-live">Live</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Bilder in Galerie</div>
+        <div class="stat-val" id="stat-bilder">0</div>
+        <div class="stat-sub">Hochgeladene Fotos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Letzte Änderung</div>
+        <div class="stat-val" style="font-size:1.1rem; padding-top:10px;" id="stat-datum">–</div>
+        <div class="stat-sub">Datum der letzten Speicherung</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Status</div>
+        <div class="stat-val" style="font-size:1.1rem; color:#5de898; padding-top:10px;">Aktiv</div>
+        <div class="stat-sub">Website ist online</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTabByBtn('galerie', this)">🖼️ Galerie</button>
+      <button class="tab-btn" onclick="showTabByBtn('texte', this)">✏️ Texte</button>
+      <button class="tab-btn" onclick="showTabByBtn('kontakt', this)">📬 Kontakt</button>
+      <button class="tab-btn" onclick="showTabByBtn('einstellungen', this)">⚙️ Einstellungen</button>
+    </div>
+
+    <!-- ==================== TAB: GALERIE ==================== -->
+    <div class="tab-panel active" id="panel-galerie">
+
+      <div class="card">
+        <div class="card-title">📤 Bilder hochladen</div>
+        <div class="card-desc">Wähle Bilder von deinem Computer aus — sie erscheinen sofort in der Galerie auf der Website.</div>
+
+        <!-- Versteckter File-Input -->
+        <input type="file" id="file-input" accept="image/*" multiple />
+
+        <div class="upload-zone" id="upload-zone">
+          <div class="upload-icon">🖼️</div>
+          <h3>Bilder hier reinziehen</h3>
+          <p>JPG, PNG, WEBP — mehrere gleichzeitig möglich</p>
+          <button class="btn-upload" onclick="document.getElementById('file-input').click()">
+            📂 Bilder auswählen
+          </button>
+          <div class="upload-progress" id="upload-progress">
+            <div class="upload-progress-bar" id="upload-bar"></div>
+          </div>
+          <div class="upload-status" id="upload-status"></div>
+          <div class="upload-error" id="upload-error"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📁 Hochgeladene Bilder <span id="img-count" style="color:var(--text-dim); font-weight:400; font-size:0.85rem;">(0)</span></div>
+        <div class="card-desc">Klicke auf ein Bild um es zu löschen.</div>
+
+        <div class="img-grid" id="img-grid">
+          <div class="empty-state" id="empty-state" style="grid-column:1/-1">
+            <div class="empty-icon">📷</div>
+            <p>Noch keine Bilder hochgeladen.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEPLOY-ANLEITUNG -->
+      <div class="card" style="border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05);">
+        <div class="card-title" style="color: var(--gold);">🌐 Bilder live schalten (auf allen Geräten sichtbar)</div>
+        <div class="card-desc">Bilder die du oben hochlädst, sind nur auf <strong style="color:var(--text)">diesem Computer</strong> sichtbar. Um sie auf Handy & überall anzuzeigen, folge diesen 3 Schritten:</div>
+
+        <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:24px;">
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;">1</div>
+            <div>
+              <div style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:4px;">Fotos in den images/ Ordner kopieren</div>
+              <div style="font-size:0.82rem;color:var(--text-dim);">Deine Fotos aus dem DJ SARI DEKO Ordner hinein kopieren nach:<br/><code style="background:rgba(255,255,255,0.08);padding:3px 8px;border-radius:3px;font-size:0.78rem;">DJ SARI DEKO\DJ SARI DEKO\images\</code></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;">2</div>
+            <div>
+              <div style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:4px;">Dateinamen unten eintragen & Config herunterladen</div>
+              <div style="font-size:0.82rem;color:var(--text-dim);">Trage die Dateinamen ein und klicke "gallery-config.js herunterladen"</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;">3</div>
+            <div>
+              <div style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:4px;">Heruntergeladene Datei ersetzen & neu deployen</div>
+              <div style="font-size:0.82rem;color:var(--text-dim);">Die neue <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:3px;">gallery-config.js</code> in den <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:3px;">js/</code> Ordner verschieben, dann im Terminal: <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:3px;">npx vercel</code></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;">
+          <div style="font-size:0.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Dateinamen deiner Bilder eingeben:</div>
+          <div id="deploy-inputs" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+            <div class="deploy-row" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;">
+              <input type="text" placeholder="z.B. hochzeit1.jpg" class="deploy-filename" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:9px 12px;color:#fff;font-family:monospace;font-size:0.82rem;outline:none;" />
+              <input type="text" placeholder="Bezeichnung (z.B. Hochzeit)" class="deploy-label" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:9px 12px;color:#fff;font-family:'Raleway',sans-serif;font-size:0.82rem;outline:none;" />
+              <button onclick="removeDeployRow(this)" style="background:rgba(220,50,50,0.2);border:none;border-radius:4px;color:#ff6b6b;padding:9px 12px;cursor:pointer;font-size:0.85rem;">✕</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button onclick="addDeployRow()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;color:var(--text);padding:9px 16px;cursor:pointer;font-family:'Raleway',sans-serif;font-size:0.82rem;">+ Bild hinzufügen</button>
+            <button onclick="downloadGalleryConfig()" style="background:var(--gold);border:none;border-radius:4px;color:#fff;padding:9px 20px;cursor:pointer;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:700;">⬇ gallery-config.js herunterladen</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB: TEXTE ==================== -->
+    <div class="tab-panel" id="panel-texte">
+      <div class="card">
+        <div class="card-title">🏠 Startseite – Haupttexte</div>
+        <div class="card-desc">Diese Texte erscheinen auf der Startseite deiner Website.</div>
+
+        <div class="form-row">
+          <label>Firmenname / Logo-Text</label>
+          <input type="text" id="t-firmenname" placeholder="z.B. Sari Deko" />
+        </div>
+        <div class="form-row">
+          <label>Hero-Untertitel (kleiner Text über dem großen Namen)</label>
+          <input type="text" id="t-hero-sub" placeholder="z.B. Willkommen bei" />
+        </div>
+        <div class="form-row">
+          <label>Hero-Tagline (Beschreibung unter dem Logo)</label>
+          <input type="text" id="t-hero-tagline" placeholder="z.B. Traumhafte Dekorationen für Hochzeiten..." />
+        </div>
+        <div class="form-row">
+          <label>Über uns – Text</label>
+          <textarea id="t-ueber" placeholder="Kurze Beschreibung über das Unternehmen..."></textarea>
+        </div>
+
+        <button class="btn-save" onclick="saveTexte()">💾 Texte speichern</button>
+        <div class="save-success" id="save-texte-ok">✅ Texte wurden gespeichert und erscheinen auf der Website!</div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: KONTAKT ==================== -->
+    <div class="tab-panel" id="panel-kontakt">
+      <div class="card">
+        <div class="card-title">📬 Kontaktdaten</div>
+        <div class="card-desc">Diese Infos erscheinen im Footer und auf der Kontaktseite.</div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label>E-Mail-Adresse</label>
+            <input type="email" id="k-email" placeholder="info@sarideko.de" />
+          </div>
+          <div class="form-row">
+            <label>Telefonnummer</label>
+            <input type="tel" id="k-tel" placeholder="+49 123 456 789" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Adresse / Standort</label>
+          <input type="text" id="k-adresse" placeholder="Musterstadt, Deutschland" />
+        </div>
+        <div class="form-row">
+          <label>Instagram-Link (optional)</label>
+          <input type="url" id="k-instagram" placeholder="https://instagram.com/..." />
+        </div>
+        <div class="form-row">
+          <label>Facebook-Link (optional)</label>
+          <input type="url" id="k-facebook" placeholder="https://facebook.com/..." />
+        </div>
+
+        <button class="btn-save" onclick="saveKontakt()">💾 Kontaktdaten speichern</button>
+        <div class="save-success" id="save-kontakt-ok">✅ Kontaktdaten wurden gespeichert!</div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: EINSTELLUNGEN ==================== -->
+    <div class="tab-panel" id="panel-einstellungen">
+      <div class="card">
+        <div class="card-title">🔑 Passwort ändern</div>
+        <div class="card-desc">Ändere das Admin-Passwort für diesen Bereich.</div>
+
+        <div class="pw-info">⚠️ Merke dir das neue Passwort gut — es wird lokal gespeichert.</div>
+
+        <div class="form-row">
+          <label>Aktuelles Passwort</label>
+          <input type="password" id="pw-aktuell" placeholder="••••••••" />
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label>Neues Passwort</label>
+            <input type="password" id="pw-neu" placeholder="••••••••" />
+          </div>
+          <div class="form-row">
+            <label>Wiederholen</label>
+            <input type="password" id="pw-wdh" placeholder="••••••••" />
+          </div>
+        </div>
+        <button class="btn-save" onclick="changePassword()">🔑 Passwort ändern</button>
+        <div class="save-success" id="save-pw-ok">✅ Passwort wurde geändert!</div>
+        <div class="save-success" id="save-pw-err" style="border-color:rgba(220,50,50,0.3); color:#ff6b6b; background:rgba(220,50,50,0.07);">❌ Fehler! Überprüfe das aktuelle Passwort und ob die neuen übereinstimmen.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🗑️ Alle Daten zurücksetzen</div>
+        <div class="card-desc">Löscht alle hochgeladenen Bilder und gespeicherten Texte (nicht rückgängig machbar).</div>
+        <button class="btn-save" style="background:#c0392b;" onclick="resetAll()">🗑️ Alles zurücksetzen</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+  // ============================================================
+  //  SCHUTZ: Nicht eingeloggt → weiterleiten
+  // ============================================================
+  if (sessionStorage.getItem('admin_logged_in') !== 'true') {
+    window.location.href = 'login.html';
+  }
+
+  // ============================================================
+  //  PASSWORT aus localStorage laden (kann geändert werden)
+  // ============================================================
+  let ADMIN_PASSWORD = localStorage.getItem('admin_password') || 'SariDeko2025';
+
+  // ============================================================
+  //  TABS
+  // ============================================================
+  function showTab(name, linkEl) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    document.getElementById('panel-' + name).classList.add('active');
+    if (linkEl) linkEl.classList.add('active');
+
+    const btnIdx = ['galerie','texte','kontakt','einstellungen'].indexOf(name);
+    document.querySelectorAll('.tab-btn')[btnIdx].classList.add('active');
+  }
+
+  function showTabByBtn(name, btnEl) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+
+    document.getElementById('panel-' + name).classList.add('active');
+    btnEl.classList.add('active');
+
+    const linkIdx = ['galerie','texte','kontakt','einstellungen'].indexOf(name);
+    document.querySelectorAll('.sidebar-nav a')[linkIdx].classList.add('active');
+  }
+
+  // ============================================================
+  //  TOAST
+  // ============================================================
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ============================================================
+  //  BILDER: Laden aus localStorage
+  // ============================================================
+  let images = JSON.parse(localStorage.getItem('sari_images') || '[]');
+
+  function saveImages() {
+    try {
+      localStorage.setItem('sari_images', JSON.stringify(images));
+      updateStats();
+    } catch (e) {
+      // localStorage voll → letztes Bild entfernen und Fehler anzeigen
+      images.pop();
+      zeigeFehler('⚠️ Speicher fast voll! Bitte lösche erst ältere Bilder bevor du neue hochlädst.');
+    }
+  }
+
+  function zeigeFehler(msg) {
+    const el = document.getElementById('upload-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+  }
+
+  function renderImages() {
+    const grid = document.getElementById('img-grid');
+    const empty = document.getElementById('empty-state');
+    const count = document.getElementById('img-count');
+
+    if (images.length === 0) {
+      grid.innerHTML = '';
+      grid.appendChild(empty);
+      empty.style.display = 'block';
+      count.textContent = '(0)';
+      return;
+    }
+
+    empty.style.display = 'none';
+    count.textContent = `(${images.length})`;
+
+    grid.innerHTML = '';
+    images.forEach((img, idx) => {
+      const item = document.createElement('div');
+      item.className = 'img-item';
+      item.innerHTML = `
+        <img src="${img.data}" alt="${img.name}" />
+        <div class="img-item-overlay">
+          <div class="img-item-name">${img.name}</div>
+          <button class="btn-delete" onclick="deleteImage(${idx})">🗑 Löschen</button>
+        </div>
+      `;
+      grid.appendChild(item);
+    });
+  }
+
+  function deleteImage(idx) {
+    if (!confirm('Bild wirklich löschen?')) return;
+    images.splice(idx, 1);
+    saveImages();
+    renderImages();
+    showToast('🗑️ Bild gelöscht');
+  }
+
+  // ============================================================
+  //  BILDER: Upload — Klick-Button + Drag & Drop
+  // ============================================================
+  const fileInput = document.getElementById('file-input');
+  const zone = document.getElementById('upload-zone');
+
+  // Klick über den echten Button (onclick im HTML) → fileInput.click()
+  fileInput.addEventListener('change', function () {
+    if (this.files && this.files.length > 0) {
+      handleFiles(this.files);
+    }
+    this.value = ''; // Reset: gleiches Bild nochmal wählbar
+  });
+
+  // Drag & Drop auf die Zone
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', e => { if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files);
+  });
+
+  // ============================================================
+  //  Bildkomprimierung via Canvas (max 1200px, JPEG 80%)
+  //  → verhindert dass localStorage überläuft
+  // ============================================================
+  function komprimiereBild(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+
+        // Skalieren falls zu groß
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else       { w = Math.round(w * MAX / h); h = MAX; }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+
+        // Als JPEG mit 80% Qualität ausgeben
+        const compressed = canvas.toDataURL('image/jpeg', 0.80);
+        callback(compressed);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleFiles(files) {
+    const liste = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (liste.length === 0) {
+      zeigeFehler('❌ Bitte nur Bilddateien wählen (JPG, PNG, WEBP).');
+      return;
+    }
+
+    // Fortschrittsanzeige einblenden
+    const progressWrap = document.getElementById('upload-progress');
+    const progressBar  = document.getElementById('upload-bar');
+    const statusEl     = document.getElementById('upload-status');
+    progressWrap.style.display = 'block';
+    statusEl.style.display = 'block';
+
+    let fertig = 0;
+    const total = liste.length;
+
+    liste.forEach((file, i) => {
+      statusEl.textContent = `Verarbeite Bild ${i + 1} von ${total}…`;
+
+      komprimiereBild(file, function(komprimiert) {
+        images.push({ name: file.name, data: komprimiert });
+        fertig++;
+        progressBar.style.width = Math.round((fertig / total) * 100) + '%';
+        statusEl.textContent = `${fertig} von ${total} fertig…`;
+
+        if (fertig === total) {
+          saveImages();
+          renderImages();
+          progressBar.style.width = '100%';
+          statusEl.textContent = `✅ ${total} Bild${total > 1 ? 'er' : ''} erfolgreich gespeichert!`;
+          showToast(`✅ ${total} Bild${total > 1 ? 'er' : ''} hochgeladen!`);
+          setTimeout(() => {
+            progressWrap.style.display = 'none';
+            statusEl.style.display = 'none';
+            progressBar.style.width = '0%';
+          }, 2500);
+        }
+      });
+    });
+  }
+
+  // ============================================================
+  //  TEXTE speichern
+  // ============================================================
+  function loadTexte() {
+    const t = JSON.parse(localStorage.getItem('sari_texte') || '{}');
+    document.getElementById('t-firmenname').value   = t.firmenname  || 'Sari Deko';
+    document.getElementById('t-hero-sub').value     = t.heroSub     || 'Willkommen bei';
+    document.getElementById('t-hero-tagline').value = t.heroTagline || 'Traumhafte Dekorationen für Hochzeiten, Events & besondere Momente';
+    document.getElementById('t-ueber').value        = t.ueber       || '';
+  }
+
+  function saveTexte() {
+    const t = {
+      firmenname:  document.getElementById('t-firmenname').value,
+      heroSub:     document.getElementById('t-hero-sub').value,
+      heroTagline: document.getElementById('t-hero-tagline').value,
+      ueber:       document.getElementById('t-ueber').value,
+      savedAt:     new Date().toLocaleString('de-DE')
+    };
+    localStorage.setItem('sari_texte', JSON.stringify(t));
+    localStorage.setItem('sari_last_change', t.savedAt);
+    updateStats();
+    showSuccessMsg('save-texte-ok');
+    showToast('✅ Texte gespeichert!');
+  }
+
+  // ============================================================
+  //  KONTAKT speichern
+  // ============================================================
+  function loadKontakt() {
+    const k = JSON.parse(localStorage.getItem('sari_kontakt') || '{}');
+    document.getElementById('k-email').value     = k.email     || '';
+    document.getElementById('k-tel').value       = k.tel       || '';
+    document.getElementById('k-adresse').value   = k.adresse   || '';
+    document.getElementById('k-instagram').value = k.instagram || '';
+    document.getElementById('k-facebook').value  = k.facebook  || '';
+  }
+
+  function saveKontakt() {
+    const k = {
+      email:     document.getElementById('k-email').value,
+      tel:       document.getElementById('k-tel').value,
+      adresse:   document.getElementById('k-adresse').value,
+      instagram: document.getElementById('k-instagram').value,
+      facebook:  document.getElementById('k-facebook').value
+    };
+    localStorage.setItem('sari_kontakt', JSON.stringify(k));
+    localStorage.setItem('sari_last_change', new Date().toLocaleString('de-DE'));
+    updateStats();
+    showSuccessMsg('save-kontakt-ok');
+    showToast('✅ Kontaktdaten gespeichert!');
+  }
+
+  // ============================================================
+  //  PASSWORT ÄNDERN
+  // ============================================================
+  function changePassword() {
+    const aktuell = document.getElementById('pw-aktuell').value;
+    const neu = document.getElementById('pw-neu').value;
+    const wdh = document.getElementById('pw-wdh').value;
+
+    if (aktuell !== ADMIN_PASSWORD || neu !== wdh || neu.length < 4) {
+      showSuccessMsg('save-pw-err');
+      return;
+    }
+
+    ADMIN_PASSWORD = neu;
+    localStorage.setItem('admin_password', neu);
+    document.getElementById('pw-aktuell').value = '';
+    document.getElementById('pw-neu').value = '';
+    document.getElementById('pw-wdh').value = '';
+    showSuccessMsg('save-pw-ok');
+    showToast('🔑 Passwort geändert!');
+  }
+
+  // ============================================================
+  //  ALLES ZURÜCKSETZEN
+  // ============================================================
+  function resetAll() {
+    if (!confirm('Wirklich ALLE Bilder und Texte löschen? Das kann nicht rückgängig gemacht werden!')) return;
+    localStorage.removeItem('sari_images');
+    localStorage.removeItem('sari_texte');
+    localStorage.removeItem('sari_kontakt');
+    localStorage.removeItem('sari_last_change');
+    images = [];
+    saveImages();
+    renderImages();
+    loadTexte();
+    loadKontakt();
+    updateStats();
+    showToast('🗑️ Alle Daten wurden gelöscht');
+  }
+
+  // ============================================================
+  //  DEPLOY-HELPER: gallery-config.js generieren & herunterladen
+  // ============================================================
+  function addDeployRow() {
+    const container = document.getElementById('deploy-inputs');
+    const row = document.createElement('div');
+    row.className = 'deploy-row';
+    row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr auto;gap:8px;';
+    row.innerHTML = `
+      <input type="text" placeholder="z.B. foto2.jpg" class="deploy-filename" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:9px 12px;color:#fff;font-family:monospace;font-size:0.82rem;outline:none;" />
+      <input type="text" placeholder="Bezeichnung (z.B. Event)" class="deploy-label" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:9px 12px;color:#fff;font-family:'Raleway',sans-serif;font-size:0.82rem;outline:none;" />
+      <button onclick="removeDeployRow(this)" style="background:rgba(220,50,50,0.2);border:none;border-radius:4px;color:#ff6b6b;padding:9px 12px;cursor:pointer;font-size:0.85rem;">✕</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function removeDeployRow(btn) {
+    const rows = document.querySelectorAll('.deploy-row');
+    if (rows.length > 1) btn.closest('.deploy-row').remove();
+  }
+
+  function downloadGalleryConfig() {
+    const rows = document.querySelectorAll('.deploy-row');
+    const eintraege = [];
+
+    rows.forEach(row => {
+      const datei = row.querySelector('.deploy-filename').value.trim();
+      const label = row.querySelector('.deploy-label').value.trim() || 'Dekoration';
+      if (datei) {
+        eintraege.push(`  { src: 'images/${datei}', label: '${label}' }`);
+      }
+    });
+
+    if (eintraege.length === 0) {
+      showToast('⚠️ Bitte mindestens einen Dateinamen eingeben!');
+      return;
+    }
+
+    const inhalt = `// ================================================
+//  SARI DEKO – Galerie Konfiguration
+//  Generiert am ${new Date().toLocaleString('de-DE')}
+// ================================================
+
+const GALLERY_IMAGES = [
+${eintraege.join(',\n')},
+];
+`;
+    const blob = new Blob([inhalt], { type: 'text/javascript' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'gallery-config.js';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ gallery-config.js heruntergeladen! In js/ Ordner verschieben & npx vercel ausführen.');
+  }
+
+  // ============================================================
+  //  ABMELDEN
+  // ============================================================
+  function logout() {
+    sessionStorage.removeItem('admin_logged_in');
+    window.location.href = 'login.html';
+  }
+
+  // ============================================================
+  //  STATS aktualisieren
+  // ============================================================
+  function updateStats() {
+    document.getElementById('stat-bilder').textContent = images.length;
+    const d = localStorage.getItem('sari_last_change');
+    document.getElementById('stat-datum').textContent = d || '–';
+  }
+
+  // ============================================================
+  //  HILFSFUNKTION: Erfolgsmeldung kurz zeigen
+  // ============================================================
+  function showSuccessMsg(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+  }
+
+  // ============================================================
+  //  INIT
+  // ============================================================
+  renderImages();
+  loadTexte();
+  loadKontakt();
+  updateStats();
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datenschutz – Sari Deko</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .page-hero {
+      background: var(--dark);
+      padding: 130px 0 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=60') center/cover;
+      opacity: 0.15;
+    }
+    .page-hero-content { position: relative; z-index: 2; }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .page-hero p { color: rgba(255,255,255,0.55); }
+
+    .legal-section { background: var(--light-bg); padding: 80px 0; }
+
+    .legal-content {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 6px;
+      padding: 52px 56px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+    }
+
+    .legal-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--dark);
+      margin: 40px 0 14px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .legal-content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+    .legal-content h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark-2);
+      margin: 22px 0 8px;
+    }
+
+    .legal-content p {
+      font-size: 0.93rem;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .legal-content ul {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    .legal-content ul li {
+      font-size: 0.93rem;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-bottom: 4px;
+    }
+    .legal-content a { color: var(--gold); }
+    .legal-content a:hover { color: var(--gold-dark); }
+
+    .info-box {
+      background: var(--light-bg);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 0.88rem;
+      color: var(--dark-2);
+    }
+
+    .placeholder-box {
+      background: rgba(201,168,76,0.08);
+      border: 1.5px dashed rgba(201,168,76,0.4);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin: 4px 0 12px;
+      font-size: 0.85rem;
+      color: #a07830;
+    }
+    .placeholder-box strong { display: block; margin-bottom: 4px; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; }
+
+    @media (max-width: 768px) {
+      .legal-content { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-logo"><span>✦</span> Sari Deko</div>
+      <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <header class="site-header scrolled" id="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text" style="color:var(--dark)">Sari Deko</span>
+      </a>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="index.html#leistungen">Leistungen</a></li>
+          <li><a href="index.html#galerie">Galerie</a></li>
+          <li><a href="index.html#ueber-uns">Über uns</a></li>
+          <li><a href="kontakt.html" class="nav-btn">Kontakt</a></li>
+        </ul>
+      </nav>
+      <a href="admin/login.html" class="admin-link" title="Admin">Admin</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="page-hero-content container">
+      <p class="section-label">Rechtliches</p>
+      <h1>Datenschutzerklärung</h1>
+      <p>Informationen gemäß DSGVO</p>
+    </div>
+  </section>
+
+  <section class="legal-section">
+    <div class="container">
+      <div class="legal-content">
+
+        <h2>1. Datenschutz auf einen Blick</h2>
+        <h3>Allgemeine Hinweise</h3>
+        <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.</p>
+
+        <h3>Datenerfassung auf dieser Website</h3>
+        <p><strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong><br />
+        Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Abschnitt „Hinweis zur Verantwortlichen Stelle" in dieser Datenschutzerklärung entnehmen.</p>
+
+        <p><strong>Wie erfassen wir Ihre Daten?</strong><br />
+        Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen (z. B. Daten, die Sie in ein Kontaktformular eingeben). Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z. B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).</p>
+
+        <p><strong>Wofür nutzen wir Ihre Daten?</strong><br />
+        Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gewährleisten. Andere Daten können zur Analyse Ihres Nutzerverhaltens verwendet werden. Daten aus dem Kontaktformular werden ausschließlich zur Bearbeitung Ihrer Anfrage genutzt.</p>
+
+        <p><strong>Welche Rechte haben Sie bezüglich Ihrer Daten?</strong><br />
+        Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, können Sie diese Einwilligung jederzeit für die Zukunft widerrufen. Außerdem haben Sie das Recht, unter bestimmten Umständen die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>
+
+        <h2>2. Hosting</h2>
+        <p>Wir hosten die Inhalte unserer Website bei folgendem Anbieter:</p>
+
+        <h3>Vercel</h3>
+        <p>Anbieter ist die Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA. Wenn Sie unsere Website besuchen, erfasst Vercel verschiedene Logfiles inklusive Ihrer IP-Adressen.</p>
+        <p>Details entnehmen Sie der Datenschutzerklärung von Vercel: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">https://vercel.com/legal/privacy-policy</a></p>
+        <p>Die Verwendung von Vercel erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an einer möglichst zuverlässigen Darstellung unserer Website.</p>
+
+        <h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
+
+        <h3>Verantwortliche Stelle</h3>
+        <div class="placeholder-box">
+          <strong>⚠️ Ihre Daten hier eintragen:</strong>
+          Name, Adresse, E-Mail, Telefon
+        </div>
+        <p>
+          <strong>[Vorname Nachname]</strong><br />
+          [Straße Nr.]<br />
+          [PLZ Ort]<br />
+          E-Mail: <a href="mailto:info@sarideko.de">info@sarideko.de</a><br />
+          Telefon: +49 15X XXXXXXXX
+        </p>
+
+        <p>Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten entscheidet.</p>
+
+        <h3>Speicherdauer</h3>
+        <p>Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre Daten gelöscht, sofern wir keine anderen rechtlich zulässigen Gründe für die Speicherung Ihrer personenbezogenen Daten haben (z. B. steuer- oder handelsrechtliche Aufbewahrungsfristen); im letztgenannten Fall erfolgt die Löschung nach Fortfall dieser Gründe.</p>
+
+        <h3>Ihre Rechte</h3>
+        <p>Sie haben folgende Rechte gegenüber uns bezüglich der Sie betreffenden personenbezogenen Daten:</p>
+        <ul>
+          <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+          <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+          <li>Recht auf Löschung (Art. 17 DSGVO)</li>
+          <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+          <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+          <li>Recht auf Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
+        </ul>
+        <p>Sie haben zudem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung Ihrer personenbezogenen Daten durch uns zu beschweren.</p>
+
+        <h3>SSL- bzw. TLS-Verschlüsselung</h3>
+        <p>Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.</p>
+
+        <h2>4. Datenerfassung auf dieser Website</h2>
+
+        <h3>Kontaktformular</h3>
+        <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.</p>
+        <p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist. In allen übrigen Fällen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde; die Einwilligung ist jederzeit widerrufbar.</p>
+        <p>Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt. Zwingende gesetzliche Bestimmungen – insbesondere Aufbewahrungsfristen – bleiben unberührt.</p>
+
+        <h3>Formspree (Kontaktformular-Dienst)</h3>
+        <p>Das Kontaktformular auf dieser Website verwendet den Dienst Formspree (Formspree, Inc., 2261 Market Street, Suite 5694, San Francisco, CA 94114, USA). Wenn Sie das Formular absenden, werden Ihre Daten an Formspree übermittelt und von dort an unsere E-Mail-Adresse weitergeleitet. Formspree verarbeitet Ihre Daten auf Servern in den USA.</p>
+        <p>Weitere Informationen: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">https://formspree.io/legal/privacy-policy</a></p>
+
+        <h3>Lokaler Browserspeicher (localStorage)</h3>
+        <div class="info-box">
+          Diese Website speichert Ihre Cookie-Einwilligung lokal in Ihrem Browser (localStorage). Es werden keine Tracking-Cookies gesetzt und keine Daten an Dritte für Werbezwecke übermittelt.
+        </div>
+
+        <h2>5. Soziale Medien und externe Links</h2>
+        <p>Diese Website enthält Links zu externen Diensten wie WhatsApp und sozialen Medien. Beim Klick auf diese Links verlassen Sie unsere Website. Für die Inhalte und Datenschutzpraktiken dieser externen Dienste sind deren Betreiber verantwortlich. Wir empfehlen, deren Datenschutzerklärungen zu lesen.</p>
+
+        <h2>6. Bilder</h2>
+        <p>Die auf dieser Website verwendeten Platzhalterbilder stammen von Unsplash (unsplash.com). Die eigentlichen Produktbilder werden lokal im Browser des Betreibers gespeichert und nicht an externe Server übertragen.</p>
+
+        <p style="margin-top: 36px; font-size: 0.8rem; color: rgba(0,0,0,0.35);">Stand: 2025</p>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div><span class="logo-icon">✦</span> <span class="logo-text">Sari Deko</span></div>
+        <p>Traumhafte Dekorationen für jeden Anlass.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Rechtliches</h4>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+      <div class="footer-kontakt">
+        <h4>Kontakt</h4>
+        <p>📧 info@sarideko.de</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Sari Deko. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
