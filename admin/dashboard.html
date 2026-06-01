@@ -6,6 +6,7 @@
   <title>Admin Dashboard – Sari Deko</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="../js/gallery-config.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -795,6 +796,43 @@
   }
 
   // ============================================================
+  //  GALLERY-CONFIG STATE: aus gallery-config.js oder localStorage
+  // ============================================================
+  let galleryConfig = JSON.parse(localStorage.getItem('sari_gallery_config') || 'null');
+  if (!galleryConfig && typeof GALLERY_IMAGES !== 'undefined') {
+    galleryConfig = GALLERY_IMAGES.map(img => ({ src: img.src, label: img.label }));
+    localStorage.setItem('sari_gallery_config', JSON.stringify(galleryConfig));
+  }
+  if (!galleryConfig) galleryConfig = [];
+
+  function saveGalleryConfig() {
+    localStorage.setItem('sari_gallery_config', JSON.stringify(galleryConfig));
+  }
+
+  function autoDownloadConfig() {
+    const eintraege = galleryConfig.map(item =>
+      `  { src: '${item.src}', label: '${item.label}' }`
+    );
+    const inhalt =
+`// ================================================
+//  SARI DEKO – Galerie Konfiguration
+//  Automatisch aktualisiert am ${new Date().toLocaleString('de-DE')}
+// ================================================
+
+const GALLERY_IMAGES = [
+${eintraege.join(',\n')},
+];
+`;
+    const blob = new Blob([inhalt], { type: 'text/javascript' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'gallery-config.js';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ============================================================
   //  BILDER: Laden aus localStorage
   // ============================================================
   let images = JSON.parse(localStorage.getItem('sari_images') || '[]');
@@ -850,10 +888,16 @@
 
   function deleteImage(idx) {
     if (!confirm('Bild wirklich löschen?')) return;
+    const deletedName = images[idx].name;
     images.splice(idx, 1);
     saveImages();
     renderImages();
-    showToast('🗑️ Bild gelöscht');
+
+    // Aus gallery-config entfernen und auto-herunterladen
+    galleryConfig = galleryConfig.filter(item => item.src !== 'images/' + deletedName);
+    saveGalleryConfig();
+    autoDownloadConfig();
+    showToast('🗑️ Gelöscht – gallery-config.js heruntergeladen! In js/ ablegen & git push.');
   }
 
   // ============================================================

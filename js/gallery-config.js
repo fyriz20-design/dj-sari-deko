@@ -10,6 +10,5 @@ const GALLERY_IMAGES = [
   { src: 'images/WhatsApp Image 2026-05-26 at 14.18.34 (2).jpeg', label: 'Event'     },
   { src: 'images/WhatsApp Image 2026-05-26 at 14.18.34 (3).jpeg', label: 'Hochzeit'  },
   { src: 'images/WhatsApp Image 2026-05-26 at 14.18.34 (4).jpeg', label: 'Hochzeit'  },
-  { src: 'images/WhatsApp Image 2026-05-26 at 14.18.34 (5).jpeg', label: 'Dekoration'},
   { src: 'images/WhatsApp Image 2026-05-26 at 14.18.34 (6).jpeg', label: 'Dekoration'},
 ];
