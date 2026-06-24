@@ -170,8 +170,11 @@ if (!localStorage.getItem('cookies_accepted')) {
   }
 
   document.getElementById('galerie-grid')?.addEventListener('click', e => {
-    const img = e.target.closest('.galerie-item img');
-    if (img) open(img);
+    const item = e.target.closest('.galerie-item');
+    if (item) {
+      const img = item.querySelector('img');
+      if (img) open(img);
+    }
   });
 
   lbClose.addEventListener('click', close);
@@ -200,7 +203,13 @@ if (!localStorage.getItem('cookies_accepted')) {
 
       document.querySelectorAll('#galerie-grid .galerie-item').forEach(item => {
         const kat = item.dataset.kategorie;
-        item.style.display = (filter === 'alle' || kat === filter) ? '' : 'none';
+        const sichtbar = filter === 'alle' || kat === filter;
+        item.style.display = sichtbar ? '' : 'none';
+        // Scroll-Animation-Styles zurücksetzen, damit eingeblendete Bilder sichtbar bleiben
+        if (sichtbar) {
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0)';
+        }
       });
     });
   });
