@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sari Deko – Traumhafte Dekorationen für Ihren besonderen Moment</title>
 
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://sarideko.de/" />
+  <meta property="og:title"       content="Sari Deko – Traumhafte Dekorationen für Ihren besonderen Moment" />
+  <meta property="og:description" content="Hochzeitsdekorationen, Event-Styling und Blumenarrangements aus einer Hand. Jetzt kostenlose Beratung anfragen." />
+  <meta property="og:image"       content="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=85" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <meta name="twitter:title"      content="Sari Deko – Traumhafte Dekorationen" />
+  <meta name="twitter:description" content="Hochzeitsdekorationen, Event-Styling und Blumenarrangements aus einer Hand." />
+  <meta name="twitter:image"      content="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=85" />
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,9 +54,6 @@
           <li><a href="kontakt.html" class="nav-btn">Kontakt</a></li>
         </ul>
       </nav>
-
-      <!-- Admin-Link (diskret oben rechts) -->
-      <a href="admin/login.html" class="admin-link" title="Admin-Bereich">Admin</a>
 
       <!-- Hamburger für Mobile -->
       <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
@@ -153,26 +164,36 @@
         <p class="section-sub">Ein Blick auf vergangene Projekte – jedes Bild erzählt eine Geschichte</p>
       </div>
 
+      <!-- Filter-Buttons -->
+      <div class="galerie-filter" id="galerie-filter">
+        <button class="filter-btn active" data-filter="alle">Alle</button>
+        <button class="filter-btn" data-filter="Hochzeit">Hochzeit</button>
+        <button class="filter-btn" data-filter="Geburtstag">Geburtstag</button>
+        <button class="filter-btn" data-filter="Blumen">Blumen</button>
+        <button class="filter-btn" data-filter="Event">Event</button>
+        <button class="filter-btn" data-filter="Feier">Feier</button>
+      </div>
+
       <!-- Galerie: wird dynamisch per JavaScript befüllt -->
       <div class="galerie-grid" id="galerie-grid">
         <!-- Platzhalter falls keine Bilder hochgeladen wurden -->
-        <div class="galerie-item galerie-big" id="fallback-1">
+        <div class="galerie-item galerie-big" id="fallback-1" data-kategorie="Hochzeit">
           <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&q=80" alt="Hochzeit Tisch Deko" loading="lazy" />
           <div class="galerie-overlay"><span>Hochzeit</span></div>
         </div>
-        <div class="galerie-item" id="fallback-2">
+        <div class="galerie-item" id="fallback-2" data-kategorie="Geburtstag">
           <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&q=80" alt="Ballons Deko" loading="lazy" />
           <div class="galerie-overlay"><span>Geburtstag</span></div>
         </div>
-        <div class="galerie-item" id="fallback-3">
+        <div class="galerie-item" id="fallback-3" data-kategorie="Blumen">
           <img src="https://images.unsplash.com/photo-1478146059778-26028b07395a?w=600&q=80" alt="Blumen Strauß" loading="lazy" />
           <div class="galerie-overlay"><span>Blumen</span></div>
         </div>
-        <div class="galerie-item" id="fallback-4">
+        <div class="galerie-item" id="fallback-4" data-kategorie="Event">
           <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80" alt="Tischdekoration" loading="lazy" />
           <div class="galerie-overlay"><span>Event</span></div>
         </div>
-        <div class="galerie-item" id="fallback-5">
+        <div class="galerie-item" id="fallback-5" data-kategorie="Feier">
           <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80" alt="Champagner Feier" loading="lazy" />
           <div class="galerie-overlay"><span>Feier</span></div>
         </div>
@@ -283,7 +304,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 Sari Deko. Alle Rechte vorbehalten.</p>
+      <p>© 2026 Sari Deko. Alle Rechte vorbehalten.</p>
     </div>
   </footer>
 
@@ -293,6 +314,17 @@
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
     </svg>
   </a>
+
+  <!-- ========== LIGHTBOX ========== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bildvorschau">
+    <button class="lb-close" id="lb-close" aria-label="Schließen">✕</button>
+    <button class="lb-prev" id="lb-prev" aria-label="Vorheriges Bild">&#8249;</button>
+    <button class="lb-next" id="lb-next" aria-label="Nächstes Bild">&#8250;</button>
+    <div class="lb-img-wrap">
+      <img id="lb-img" src="" alt="" />
+    </div>
+    <div class="lb-caption" id="lb-caption"></div>
+  </div>
 
   <!-- ========== BACK TO TOP ========== -->
   <button class="back-to-top" id="back-to-top" aria-label="Nach oben scrollen">↑</button>
