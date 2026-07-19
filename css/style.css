@@ -7,7 +7,11 @@
 /* ---- RESET & BASIS ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%; /* verhindert iOS-Auto-Zoom bei Rotation */
+}
 
 body {
   font-family: 'Raleway', sans-serif;
@@ -16,6 +20,12 @@ body {
   background: #fff;
   line-height: 1.7;
   overflow-x: hidden;
+}
+
+/* Touch: kein 300ms-Delay, kein grauer Tap-Flash, sofortige Reaktion */
+a, button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -127,16 +137,32 @@ ul { list-style: none; }
   top: 0; left: 0; right: 0;
   z-index: 1000;
   padding: 20px 0;
-  transition: all 0.4s ease;
+  transition: padding 0.4s ease;
   isolation: isolate;
 }
 
-.site-header.scrolled {
+/* WICHTIG: Der Blur-Hintergrund liegt auf einem Pseudo-Element statt auf dem
+   Header selbst. backdrop-filter direkt auf .site-header macht den Header zum
+   Containing Block für position:fixed-Kinder — das mobile Vollbild-Menü
+   (.main-nav) würde dann auf die Header-Höhe beschnitten. */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(255,255,255,0.97);
   backdrop-filter: blur(8px);
-  padding: 12px 0;
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 2px 30px rgba(0,0,0,0.08);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
+
+.site-header.scrolled {
+  padding: 12px 0;
+}
+.site-header.scrolled::before { opacity: 1; }
 
 .nav-container {
   display: flex;
@@ -253,8 +279,8 @@ ul { list-style: none; }
   align-items: center;
   justify-content: center;
   gap: 5px;
-  width: 44px;
-  height: 44px;
+  width: 48px;   /* min. 48x48px Touch-Target (Apple/Google-Richtlinie) */
+  height: 48px;
   background: none;
   border: none;
   cursor: pointer;
@@ -276,6 +302,7 @@ ul { list-style: none; }
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh; /* mobile Browserleiste: kein Springen/Abschneiden */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1045,6 +1072,8 @@ ul { list-style: none; }
     flex-direction: column;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
+    height: 100vh;
+    height: 100dvh; /* iOS/Android: dynamische Browserleisten korrekt einrechnen */
     background: #141414;
     align-items: center;
     justify-content: center;
@@ -1054,14 +1083,10 @@ ul { list-style: none; }
     visibility: hidden;
     pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    will-change: opacity;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 24px 0;
+    padding: 80px 0 40px;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
   }
   .main-nav.open {
     opacity: 1;
@@ -1098,17 +1123,19 @@ ul { list-style: none; }
   }
   .main-nav a::after { display: none; }
 
-  .hamburger { display: flex; z-index: 1501; }
+  .hamburger { display: flex; position: relative; z-index: 1501; }
   /* Hamburger X-Animation */
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  /* X immer weiß, auch bei gescrolltem (hellem) Header — Menü-Overlay ist dunkel */
+  .hamburger.open span { background: #fff !important; }
 
   .admin-link { display: none; }
 
-  /* WhatsApp & Back-to-Top auf Mobile weiter nach innen */
-  .whatsapp-btn { bottom: 20px; right: 16px; width: 52px; height: 52px; }
-  .back-to-top  { bottom: 84px; right: 20px; }
+  /* WhatsApp & Back-to-Top: Safe-Area (iPhone Home-Indicator) beachten */
+  .whatsapp-btn { bottom: calc(20px + env(safe-area-inset-bottom)); right: 16px; width: 52px; height: 52px; }
+  .back-to-top  { bottom: calc(84px + env(safe-area-inset-bottom)); right: 20px; }
 
   /* Cookie Banner */
   .cookie-banner { flex-direction: column; text-align: center; padding: 20px 16px; }

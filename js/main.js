@@ -94,22 +94,33 @@ if (hamburger && mainNav) {
     window.scrollTo(0, savedScrollY);
   }
 
-  hamburger.addEventListener('click', () => {
-    const open = mainNav.classList.toggle('open');
+  function setMenu(open) {
+    mainNav.classList.toggle('open', open);
     hamburger.classList.toggle('open', open);
-    if (open) {
-      lockScroll();
-    } else {
-      unlockScroll();
-    }
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    if (open) lockScroll(); else unlockScroll();
+  }
+
+  hamburger.setAttribute('aria-expanded', 'false');
+
+  hamburger.addEventListener('click', () => {
+    setMenu(!mainNav.classList.contains('open'));
   });
 
   mainNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mainNav.classList.remove('open');
-      hamburger.classList.remove('open');
-      unlockScroll();
-    });
+    link.addEventListener('click', () => setMenu(false));
+  });
+
+  // Escape schließt das Menü
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mainNav.classList.contains('open')) setMenu(false);
+  });
+
+  // Beim Drehen/Vergrößern auf Desktop-Breite: Menü schließen & Scroll freigeben,
+  // sonst bleibt die Seite gesperrt (body position:fixed)
+  window.matchMedia('(min-width: 769px)').addEventListener('change', e => {
+    if (e.matches && mainNav.classList.contains('open')) setMenu(false);
   });
 }
 
