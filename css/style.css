@@ -1059,6 +1059,9 @@ ul { list-style: none; }
     will-change: opacity;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 0;
   }
   .main-nav.open {
     opacity: 1;

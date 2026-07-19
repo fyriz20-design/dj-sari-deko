@@ -74,17 +74,41 @@ const hamburger = document.getElementById('hamburger');
 const mainNav   = document.querySelector('.main-nav');
 
 if (hamburger && mainNav) {
+  let savedScrollY = 0;
+
+  function lockScroll() {
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY);
+  }
+
   hamburger.addEventListener('click', () => {
     const open = mainNav.classList.toggle('open');
     hamburger.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) {
+      lockScroll();
+    } else {
+      unlockScroll();
+    }
   });
 
   mainNav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mainNav.classList.remove('open');
       hamburger.classList.remove('open');
-      document.body.style.overflow = '';
+      unlockScroll();
     });
   });
 }
